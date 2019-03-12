@@ -15,7 +15,7 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private RecyclerView.Adapter myAdapter;
     private RecyclerView.LayoutManager layoutManager;
-    private List<String> myDataSet;
+    private List<AddOnItem> myDataSet;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,7 +23,14 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         recyclerView = findViewById(R.id.recyclerView);
 
-        myDataSet = Arrays.asList("Dog","Cat", "Wolf","Cow","Tiger", "Elephant");
+        myDataSet = new ArrayList<>();
+        myDataSet.add(new AddOnItem("dog", 10));
+        myDataSet.add(new AddOnItem("cat", 10));
+        myDataSet.add(new AddOnItem("cow", 10));
+        myDataSet.add(new AddOnItem("horse", 10));
+        myDataSet.add(new AddOnItem("elephant", 10));
+        myDataSet.add(new AddOnItem("Jill", 10));
+
         int columnCount = 2;
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, columnCount);
         recyclerView.setLayoutManager(gridLayoutManager);

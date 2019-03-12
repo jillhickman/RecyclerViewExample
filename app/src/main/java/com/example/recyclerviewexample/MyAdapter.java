@@ -12,7 +12,7 @@ import android.widget.TextView;
 import java.util.List;
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
-    private List<String> myDataSet;
+    private List<AddOnItem> myDataSet;
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -27,7 +27,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         }
     }
     // Provide a suitable constructor (depends on the kind of dataset)
-    public MyAdapter(List<String> myDataSet) {
+    public MyAdapter(List<AddOnItem> myDataSet) {
         this.myDataSet = myDataSet;
     }
 
@@ -55,8 +55,9 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position, @NonNull List<Object> payloads) {
 // - get element from your dataset at this position
         // - replace the contents of the view with that element
-        Log.d("MyAdapter", myDataSet.get(position));
-        holder.textView.setText(myDataSet.get(position));
+        String name = myDataSet.get(position).getName();
+        Log.d("MyAdapter", name);
+        holder.textView.setText(name);
     }
 
     @Override
