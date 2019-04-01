@@ -6,6 +6,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -16,12 +17,14 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView.Adapter myAdapter;
     private RecyclerView.LayoutManager layoutManager;
     private List<AddOnItem> myDataSet;
+    public  TextView addOnsTV;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        addOnsTV = (TextView) findViewById(R.id.amountTV);
 
         myDataSet = new ArrayList<>();
         myDataSet.add(new AddOnItem("dog", 10));
@@ -38,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
         // specify an adapter
         myAdapter = new MyAdapter(myDataSet);
         recyclerView.setAdapter(myAdapter);
+        addOnsTV.setText("0");
 
     }
 }

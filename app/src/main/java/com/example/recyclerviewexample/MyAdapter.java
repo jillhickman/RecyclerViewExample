@@ -7,12 +7,18 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckedTextView;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.RadioButton;
+import android.widget.TextView;
 
 import java.util.List;
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     private List<AddOnItem> myDataSet;
+    RadioButton radio;
+    TextView tv;
+    private int lastSelectedPosition = -1;
 
 
     // Provide a suitable constructor (depends on the kind of dataset)
@@ -25,9 +31,11 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
         // create a new view
         Context context = viewGroup.getContext();
-        LayoutInflater  layoutInflater = LayoutInflater.from(context);
-        CheckedTextView checkedTextView = (CheckedTextView) layoutInflater.inflate(R.layout.name_list, viewGroup,false);
-        return new MyViewHolder(checkedTextView);
+        LayoutInflater layoutInflater = LayoutInflater.from(context);
+        View view = layoutInflater.inflate(R.layout.name_list, viewGroup, false);
+        radio = (RadioButton) view.findViewById(R.id.add_ons_radioButton);
+        tv = (TextView) view.findViewById(R.id.add_ons_name);
+        return new MyViewHolder(view, radio, tv);
     }
 
     @Override
@@ -43,8 +51,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         String name = myDataSet.get(position).getName();
         boolean isChecked = myDataSet.get(position).isChecked();
         Log.d("MyAdapter", name);
-        holder.checkedTextView.setText(name);
-        holder.checkedTextView.setChecked(isChecked);
+        holder.tv.setText(name);
+        holder.radio.setChecked(isChecked);
     }
 
     @Override
@@ -58,21 +66,44 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         // each data item is just a string in this case
-        private CheckedTextView checkedTextView;
-        MyViewHolder(CheckedTextView checkedTextView) {
-            super(checkedTextView);
-            this.checkedTextView = checkedTextView;
-            checkedTextView.setOnClickListener(this);
-        }
+        RadioButton radio;
+        TextView tv;
 
+        MyViewHolder(View view, RadioButton radio, TextView tv) {
+            super(view);
+            this.radio = radio;
+            this.tv = tv;
+            radio.setOnClickListener(this);
+        }
 
         @Override
         public void onClick(View view) {
-            int adapterPosition =  getAdapterPosition();
-            boolean isChecked = myDataSet.get(adapterPosition).isChecked();
-            //This is setting the isChecked to the reverse
-            myDataSet.get(adapterPosition).setChecked(!isChecked);
+            lastSelectedPosition = getAdapterPosition();
+            boolean isChecked = myDataSet.get(lastSelectedPosition).isChecked();
+            //First check to see if there are any items that are checked to true for isChecked
+            if(myDataSet != null && myDataSet.size() > 0){
+                for (int addOnItemIndex = 0; addOnItemIndex < myDataSet.size(); addOnItemIndex++) {
+                    boolean isCheckedTrue = myDataSet.get(addOnItemIndex).isChecked();
+                    if(isCheckedTrue){
+                        myDataSet.get(addOnItemIndex).setChecked(false);
+                    }
+                }
+            }
+            myDataSet.get(lastSelectedPosition).setChecked(!isChecked);
+            long addOnsTotalAmount = myDataSet.get(lastSelectedPosition).getAmount();
+
             notifyDataSetChanged();
         }
+
+
+//        @Override
+//        public void onClick(View view) {
+//            int adapterPosition =  getAdapterPosition();
+//            boolean isChecked = myDataSet.get(adapterPosition).isChecked();
+//            //This is setting the isChecked to the reverse
+//            myDataSet.get(adapterPosition).setChecked(!isChecked);
+//            notifyDataSetChanged();
+//        }
+
     }
 }
